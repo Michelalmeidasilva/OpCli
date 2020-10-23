@@ -10,14 +10,16 @@ public class MatrizThread extends  Thread{
   int tamanhoTotalLinhas;
   int tamanhoTotalColunas;
   int qtdRandomInt = 100;
+  int modoInsercao;
   TreeMap<Integer, int[]> treemap = new TreeMap<Integer, int[]>();
 
-  MatrizThread(int colunaInicial, int colunaFinal, int tamanhoTotalLinhas, int tamanhoTotalColunas, boolean interactive){
+  MatrizThread(int colunaInicial, int colunaFinal, int tamanhoTotalLinhas, int tamanhoTotalColunas, boolean interactive, int modoInsercao){
     this.colunaInicial = colunaInicial;
     this.colunaFinal = colunaFinal;
     this.tamanhoTotalLinhas = tamanhoTotalLinhas;
     this.tamanhoTotalColunas= tamanhoTotalColunas;
     this.interactive = interactive;
+    this.modoInsercao = modoInsercao;
   }
 
   /**
@@ -33,7 +35,8 @@ public class MatrizThread extends  Thread{
   }
 
   void preencherMatrizDiagonal() {
-
+    MatrizDiagonal matrizDiagonal = new MatrizDiagonal(interactive);
+    matrizDiagonal.execucao();
   }
 
   /**
@@ -82,8 +85,12 @@ public class MatrizThread extends  Thread{
   }
 
   public void run (){
-    processamentoAuxiliar();
-    preencherMatrizRandomicamente();
-//    preencherMatrizDiagonal();
+    if(modoInsercao == 1){
+      processamentoAuxiliar();
+      preencherMatrizRandomicamente();
+    }
+    if(modoInsercao == 2){
+      preencherMatrizDiagonal();
+    }
   }
 }

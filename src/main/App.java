@@ -8,7 +8,7 @@ import picocli.CommandLine.Option;
 import java.util.concurrent.Callable;
 
 @Command(name = "OpCli", mixinStandardHelpOptions = true, version = "OpCli 1.0",
-  description = "Algoritmo de preenchimento de matriz com threads, desenvolvido por Michel Almeida da Silva e Ignacio Garcia.")
+  description = "Algoritmo de preenchimento de matriz com threads\ndesenvolvido por Michel Almeida da Silva e Ignacio Garcia.\nAcesse o repositorio com codigo fonte em:\nhttps://github.com/Michelalmeidasilva/OpCli")
 
 class App  implements Callable<Integer>  {
   @Option(names = { "-t", "--threads" },  description = "O numero de threads é baseado no numero informado")
@@ -29,13 +29,32 @@ class App  implements Callable<Integer>  {
 
   public Integer call() {
 
-    if (randomico) {
-      System.out.println("preenchimento randomico:");
+    if (diagonal && interactive) {
+        System.out.println("Por padrão o modo diagonal está setado com 1 thread apenas");
+        Config config= new Config(interactive, 2);
+        config.executionWithNumbersOfThreads(1);
+        return 0;
+    }
+
+    if(diagonal && interactive == false){
+      System.out.println("Por padrão o modo diagonal está setado com 1 thread apenas");
+      Config config= new Config(false, 2);
+      config.executionWithNumbersOfThreads(1);
       return 0;
     }
 
-    if (diagonal) {
-      System.out.println("preenchimento diagonal:");
+    if(randomico && numberOfThreads == -1 ){
+      System.out.println("Para o modo randomico voce deve selecionar a quantidade de   opção --threads (nrThreads) ou -t (nrThreads)");
+    }
+    if (randomico && numberOfThreads != -1) {
+      Config config;
+      if (interactive == true) {
+        config = new Config(interactive, 1);
+        config.executionWithNumbersOfThreads(numberOfThreads);
+        return 0;
+      }
+      config = new Config(interactive , 1);
+      config.executionWithNumbersOfThreads(numberOfThreads);
       return 0;
     }
 
@@ -53,17 +72,7 @@ class App  implements Callable<Integer>  {
       return 0;
     }
 
-    if (numberOfThreads != -1) {
-      Config config;
-      if (interactive == true) {
-        config = new Config(interactive, 1);
-        config.executionWithNumbersOfThreads(numberOfThreads);
-        return 0;
-      }
-      config = new Config(interactive , 1);
-      config.executionWithNumbersOfThreads(numberOfThreads);
-      return 0;
-    }
+
 
     return 0;
   }

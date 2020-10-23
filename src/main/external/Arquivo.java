@@ -17,16 +17,11 @@ public class Arquivo {
       e.printStackTrace();
     }
     PrintWriter gravarArq = new PrintWriter(arq);
-
-    if(interactive) gravarArq.println("\nPreenchimento com  " + nrThreads  + " threads, tempo final de "  + tempoExecucao / 1000d+"ms" )  ;
-
     for (int i=0; i<tamanho; i++) {
       for (int j = 0 ; j < matriz[i].length; j++){
         gravarArq.printf("%d|", matriz[i][j]);
       }
     }
-    if(interactive) gravarArq.println("\nPreenchimento com  " + nrThreads  + " threads, tempo final de "  + tempoExecucao / 1000d+"ms" )  ;
-
     try {
       arq.close();
       System.out.println("Escrita no arquivo finalizada, salvo em: " + caminhoAbsoluto);
