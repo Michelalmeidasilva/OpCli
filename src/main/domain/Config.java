@@ -12,8 +12,10 @@ public class Config {
   private int[] partes;
   private MatrizThread[] threads;
   private final boolean interactive;
+  private int modoInsercao;
 
-  public Config(boolean interactive){
+  public Config(boolean interactive, int modoInsercao){
+    this.modoInsercao = modoInsercao;
    this.interactive = interactive;
    System.out.println("Modo interactive:" + interactive );
   }
