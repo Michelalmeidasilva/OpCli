@@ -7,41 +7,70 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class Config {
+  private int nrDeLinhas ;
+  private int pedacoDeColuna ;        //um pedaço das colunas exemplo uma matriz 1000X1000 e 4 threads entao tem 1000 colunas /4, logo serão 250 posições pra cada thread
+  private int[] partes;
+  private MatrizThread[] threads;
+  private final boolean interactive;
 
-  public void withNrX(int nrThreads,boolean interactive) {
-    System.out.println("Modo interactive:" + interactive );
-    MatrizThread[] threads = new MatrizThread[nrThreads];
-    int nrDeColunas = Data.MatrizEntrada[0].length;
-    int nrDeLinhas = Data.MatrizEntrada.length;
-    int pedacoDeColuna = nrDeColunas / nrThreads;        //um pedaço das colunas exemplo uma matriz 1000X1000 e 4 threads entao tem 1000 colunas /4, logo serão 250 posições pra cada thread
-    int partes[] = new int[nrThreads +1];
+  public Config(boolean interactive){
+   this.interactive = interactive;
+   System.out.println("Modo interactive:" + interactive );
+  }
 
-    /**
-     * Definição das partes baseadas no numero de thread
-     */
-    for (int i = 0; i < partes.length; i++)
-      partes[i] = pedacoDeColuna * (i);
+  /**
+   * Atributos de configuração da execução
+   */
+  private void setAtributtesBasedOnThreads(int nrThreads){
+     int nrDeColunas ;
+     threads = new MatrizThread[nrThreads];
+     nrDeColunas = Data.MatrizEntrada[0].length;
+     nrDeLinhas = Data.MatrizEntrada.length;
+     pedacoDeColuna = nrDeColunas / nrThreads;        //um pedaço das colunas exemplo uma matriz 1000X1000 e 4 threads entao tem 1000 colunas /4, logo serão 250 posições pra cada threa
+     partes = new int[nrThreads +1];
 
-    /**
-     * Colocação de cada nova thread criada em um pool, as threads estão recebendo um vetor com a posição inicial e final
-     * ( dando a ideia de cada uma thread executar uma parte do vetor
-     */
+  }
+
+  /**
+   * Colocação de cada nova thread criada em um pool, as threads estão recebendo um vetor com a posição inicial e final
+   * ( dando a ideia de cada uma thread executar uma parte do vetor
+   * @return ExecutorService
+   */
+  private ExecutorService execucaoPool(){
     if(interactive) System.out.println("Colunas : de x a y");
+
     for (int k = 0; k < threads.length; k++) {
       threads[k] = new MatrizThread(partes[k], partes[k + 1], nrDeLinhas, Data.MatrizEntrada[0].length, interactive);
-     if(interactive) System.out.print(threads[k].colunaInicial + "-" + threads[k].colunaFinal + "|");
+      if(interactive) System.out.print(threads[k].colunaInicial + "-" + threads[k].colunaFinal + "|");
     }
-    if(interactive) System.out.println("\nInicio do processamento: com " + nrThreads + " threads");
 
-    long tempoInicial = System.currentTimeMillis();
-    long tempoFinal;
-
+    if(interactive) System.out.println("\nInicio do processamento");
     ExecutorService pool = Executors.newFixedThreadPool(threads.length);
     for (int i = 0; i < threads.length; i++)
       pool.execute(threads[i]);
 
     pool.shutdown();
+    return pool;
+  }
 
+  /**
+   * Definição das partes que vao ser divididas as colunas, o calculo é baseado no numero de thread
+   */
+  private void populatePartes(){
+    for (int i = 0; i < partes.length; i++)
+      partes[i] = pedacoDeColuna * (i);
+  }
+
+  /**
+   * Executa o processamento com o numero baseado de threads setado
+   * @param nrThreads
+   */
+  public void executionWithNumbersOfThreads(int nrThreads) {
+    long tempoInicial = System.currentTimeMillis();
+    long tempoFinal;
+    setAtributtesBasedOnThreads(nrThreads);
+    populatePartes();
+    ExecutorService pool = execucaoPool();
     try {
       pool.awaitTermination(1, TimeUnit.DAYS);
       geraSaida();
@@ -55,12 +84,12 @@ public class Config {
     }
   }
 
-  static int indexI=0;
-  static int indexJ=0;
-
+  /**
+   * Ordenação da matriz
+   */
   void geraSaida(){
-    int organizer;
-    for(organizer=0;organizer<100;organizer++){
+    int indexI=0, indexJ=0;
+    for(int organizer=0;organizer<100;organizer++){
       for (int i = 0; i < 1000; i++) {
         for (int j = 0; j < 1000; j ++){
           if(Data.MatrizEntrada[i][j]==organizer){

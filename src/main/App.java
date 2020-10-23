@@ -42,25 +42,30 @@ class App  implements Callable<Integer>  {
 
 
     if (processadorThread) {
-      Config config = new Config();
+      Config config;
+
       int cores = Runtime.getRuntime().availableProcessors();
       System.out.println("Cores da sua maquina:" + cores);
       if (interactive == true) {
-        config.withNrX(cores, interactive);
+        config = new Config(interactive);
+        config.executionWithNumbersOfThreads(cores);
         return 0;
       }
-      config.withNrX(cores, interactive);
+      config = new Config(interactive);
+      config.executionWithNumbersOfThreads(cores);
       return 0;
     }
 
 
     if (numberOfThreads != -1) {
-      Config config = new Config();
+      Config config;
       if (interactive == true) {
-        config.withNrX(numberOfThreads, interactive);
+        config = new Config(interactive);
+        config.executionWithNumbersOfThreads(numberOfThreads);
         return 0;
       }
-      config.withNrX(numberOfThreads, interactive);
+      config = new Config(interactive);
+      config.executionWithNumbersOfThreads(numberOfThreads);
       return 0;
 
     }
