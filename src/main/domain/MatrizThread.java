@@ -1,5 +1,6 @@
 package main.domain;
 
+import java.util.HashMap;
 import java.util.Random;
 import java.util.TreeMap;
 
@@ -11,7 +12,7 @@ public class MatrizThread extends  Thread{
   int tamanhoTotalColunas;
   int qtdRandomInt = 100;
   ModosInsercao modoInsercao;
-  TreeMap<Integer, int[]> treemap = new TreeMap<Integer, int[]>();
+  HashMap<Integer, int[]> treemap = new HashMap<Integer, int[]>();
 
   MatrizThread(int colunaInicial, int colunaFinal, int tamanhoTotalLinhas, int tamanhoTotalColunas, boolean interactive, ModosInsercao modoInsercao){
     this.colunaInicial = colunaInicial;
