@@ -12,6 +12,7 @@ public class MatrizThread extends  Thread{
   int tamanhoTotalColunas;
   int qtdRandomInt = 100;
   ModosInsercao modoInsercao;
+//  TreeMap<Integer, int[]> treemap = new TreeMap<Integer, int[]>();  // alterações possiveis treeMap ou HashMap verificar melhor desempenho
   HashMap<Integer, int[]> treemap = new HashMap<Integer, int[]>();
 
   MatrizThread(int colunaInicial, int colunaFinal, int tamanhoTotalLinhas, int tamanhoTotalColunas, boolean interactive, ModosInsercao modoInsercao){
