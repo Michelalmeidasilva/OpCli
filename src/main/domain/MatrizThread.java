@@ -10,10 +10,10 @@ public class MatrizThread extends  Thread{
   int tamanhoTotalLinhas;
   int tamanhoTotalColunas;
   int qtdRandomInt = 100;
-  int modoInsercao;
+  ModosInsercao modoInsercao;
   TreeMap<Integer, int[]> treemap = new TreeMap<Integer, int[]>();
 
-  MatrizThread(int colunaInicial, int colunaFinal, int tamanhoTotalLinhas, int tamanhoTotalColunas, boolean interactive, int modoInsercao){
+  MatrizThread(int colunaInicial, int colunaFinal, int tamanhoTotalLinhas, int tamanhoTotalColunas, boolean interactive, ModosInsercao modoInsercao){
     this.colunaInicial = colunaInicial;
     this.colunaFinal = colunaFinal;
     this.tamanhoTotalLinhas = tamanhoTotalLinhas;
@@ -45,7 +45,6 @@ public class MatrizThread extends  Thread{
    * e insere na matriz
    * Se a variavel interactive estiver com valor true ela imprime as posições randomicas que foram tentadas
    */
-
   void preencherMatrizRandomicamente(){
     System.out.println("Executando Preenchimento Randomico, aguarde um momento");
     System.out.print("...........");
@@ -71,6 +70,7 @@ public class MatrizThread extends  Thread{
       }
     }
     else{
+
       while(treemap.size() != 0){
         int randomico = (int) (Math.random() * (tam ));
         if(treemap.containsKey(randomico) == true){
@@ -84,13 +84,50 @@ public class MatrizThread extends  Thread{
     System.out.println("\nFinal da execução aguarde mais um momento ...");
   }
 
+
+  void preencherMatrizCXC(){
+    int rand;
+    for(int i=0;i<tamanhoTotalLinhas;i++){
+      for(int j=0;j<tamanhoTotalColunas;j++){
+        rand=(int)(Math.random()*100);
+        while(rand==0){
+          rand=(int)(Math.random()*100);
+        }
+        Data.MatrizEntrada[i][j]=rand;
+      }
+    }
+  }
+
+  void preencherMatrizLXL(){
+    int rand;
+    for(int i=0;i<tamanhoTotalLinhas;i++){
+      for(int j=0;j<tamanhoTotalColunas;j++){
+        rand=(int)(Math.random()*100);
+        while(rand==0){
+          rand=(int)(Math.random()*100);
+        }
+        Data.MatrizEntrada[j][i]=rand;
+      }
+    }
+  }
+
   public void run (){
-    if(modoInsercao == 1){
+
+    if(modoInsercao == ModosInsercao.randomico){
       processamentoAuxiliar();
       preencherMatrizRandomicamente();
     }
-    if(modoInsercao == 2){
+
+    if(modoInsercao == ModosInsercao.diagonal){
       preencherMatrizDiagonal();
+    }
+
+    if(modoInsercao == ModosInsercao.linhaXLinha){
+      preencherMatrizLXL();
+    }
+
+    if(modoInsercao == ModosInsercao.colunaXColuna){
+      preencherMatrizCXC();
     }
   }
 }

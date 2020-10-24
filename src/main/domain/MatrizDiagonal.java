@@ -24,7 +24,6 @@ public class MatrizDiagonal {
       preenchePrimeiraParte(i, j, tam, Data.MatrizEntrada);
       preencheSegundaParte(i, j, tam, Data.MatrizEntrada);
     }
-
   }
 
   void preenchePrimeiraParte(int i, int j, int tam, int matriz [][]){
@@ -71,6 +70,8 @@ public class MatrizDiagonal {
   }
 
   void imprimirMatriz(int matriz[][]){
+    System.out.println();
+
     for (int k = 0; k < matriz.length ; k ++){
       for (int l = 0; l < matriz[k].length; l++) {
         if( matriz[k][l] == 1 ){
@@ -81,7 +82,7 @@ public class MatrizDiagonal {
       }
       System.out.println();
     }
-    System.out.println("");
-  }
+    System.out.println();
 
+  }
 }

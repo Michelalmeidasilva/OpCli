@@ -12,10 +12,10 @@ public class Config {
   private int[] partes;
   private MatrizThread[] threads;
   private final boolean interactive;
-  private int modoInsercao;
+  private   ModosInsercao modoInsercao;
 
 
-  public Config(boolean interactive, int modoInsercao){
+  public Config(boolean interactive, ModosInsercao modoInsercao){
     this.modoInsercao = modoInsercao;
     this.interactive = interactive;
     System.out.println("Modo interactive:" + interactive );
@@ -39,7 +39,7 @@ public class Config {
    * ( dando a ideia de cada uma thread executar uma parte do vetor
    * @return ExecutorService
    */
-  private ExecutorService execucaoPool(int modoInsercao){
+  private ExecutorService execucaoPool(ModosInsercao modoInsercao){
     if(interactive) System.out.println("Colunas : de x a y");
 
     for (int k = 0; k < threads.length; k++) {
@@ -73,9 +73,7 @@ public class Config {
     long tempoFinal;
     setAtributtesBasedOnThreads(nrThreads);
     populatePartes();
-
     ExecutorService pool = execucaoPool(this.modoInsercao);
-
     try {
       pool.awaitTermination(1, TimeUnit.DAYS);
       geraSaida();
