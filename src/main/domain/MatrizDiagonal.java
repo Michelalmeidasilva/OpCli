@@ -7,23 +7,15 @@ public class MatrizDiagonal {
   final String ANSI_RED = "\u001B[31m";
   final String ANSI_RESET = "\u001B[0m";
   final String ANSI_WHITE = "\u001B[37m";
-  boolean interactive;
-
-  MatrizDiagonal(boolean interactive){
-    this.interactive = interactive;
+  MatrizDiagonal(){
   }
 
   public void execucao(){
     int i = 0, j = 0;
     int tam = 0;
-    if(interactive){
-      int matriz[][]= new int[10][10];
-      preenchePrimeiraParte(i, j, tam, matriz);
-      preencheSegundaParte(i, j, tam, matriz);
-    }else {
-      preenchePrimeiraParte(i, j, tam, Data.MatrizEntrada);
-      preencheSegundaParte(i, j, tam, Data.MatrizEntrada);
-    }
+    preenchePrimeiraParte(i, j, tam, Data.MatrizEntrada);
+    preencheSegundaParte(i, j, tam, Data.MatrizEntrada);
+
   }
 
   void preenchePrimeiraParte(int i, int j, int tam, int matriz [][]){
@@ -33,14 +25,12 @@ public class MatrizDiagonal {
       j = matriz.length - 1;
       i = tam;
       for (int o = 0; o <= tam; o++){
-        if(interactive) matriz[i][j] = 1;
-        else matriz[i][j] = random.nextInt(100);
+        matriz[i][j] = random.nextInt(100);
         j -- ;
         i -- ;
         if( i < 0) break;
         if( j > matriz.length - 1) break;
       }
-      if(interactive) imprimirMatriz(matriz);
       if(tam == matriz.length - 1){
         break;
       }
@@ -53,15 +43,13 @@ public class MatrizDiagonal {
       j = 0;
       i = matriz.length  - (tam + 1);
       for (int o = 0; o <= tam; o++){
-        if(interactive) matriz[i][j] = 1;
-        else matriz[i][j] = random.nextInt(100);
+        matriz[i][j] = random.nextInt(100);
 
         j ++ ;
         i ++ ;
         if( i > matriz.length - 1) break;
         if( j > matriz.length - 1) break;
       }
-      if(interactive) imprimirMatriz(matriz);
       if(tam == 0){
         break;
       }

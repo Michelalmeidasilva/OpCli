@@ -1,11 +1,7 @@
 package main.domain;
-
 import main.external.Arquivo;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.TreeMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -15,12 +11,14 @@ public class Config {
   private int pedacoDeColuna ;        //um pedaço das colunas exemplo uma matriz 1000X1000 e 4 threads entao tem 1000 colunas /4, logo serão 250 posições pra cada thread
   private int[] partes;
   private MatrizThread[] threads;
-  private final boolean interactive;
   private   ModosInsercao modoInsercao;
   int tamanhoTotalLinhas;
   int tamanhoTotalColunas;
 
 
+  /**
+   * Carrega para uma hashMap todas posições possiveis da matriz
+   */
   HashMap<Integer, int[]> instanciacaoDeHashMap(int colunaInicial,int colunaFinal, HashMap<Integer, int[]> treeMap){
     for (int i = 0 ; i < tamanhoTotalLinhas; i ++){
       for (int j = colunaInicial; j < colunaFinal; j ++){
@@ -33,7 +31,6 @@ public class Config {
 
   public Config(boolean interactive, ModosInsercao modoInsercao){
     this.modoInsercao = modoInsercao;
-    this.interactive = interactive;
     System.out.println("Modo interactive:" + interactive );
     this.tamanhoTotalLinhas = Data.MatrizEntrada.length;
     this.tamanhoTotalColunas= Data.MatrizEntrada[0].length;
@@ -57,18 +54,11 @@ public class Config {
    * ( dando a ideia de cada uma thread executar uma parte do vetor
    * @return ExecutorService
    */
-  private long execucaoPool(ModosInsercao modoInsercao){
+  private void execucaoPool( ){
     long tempoInicial = System.currentTimeMillis();
-    if(interactive) System.out.println("Colunas : de x a y");
     long tempoFinal =0;
-
-    for (int k = 0; k < threads.length; k++) {
-      HashMap<Integer, int[]> auxiliar= instanciacaoDeHashMap(partes[k], partes[k+1], new HashMap<>());
-      threads[k] = new MatrizThread(partes[k], partes[k + 1], interactive, modoInsercao, auxiliar);
-      if(interactive) System.out.print(threads[k].colunaInicial + "-" + threads[k].colunaFinal + "|");
-    }
-
-    if(interactive) System.out.println("\nInicio do processamento");
+    System.out.println("Colunas : de x a y");
+    System.out.println("\nInicio do processamento");
     ExecutorService pool = Executors.newFixedThreadPool(threads.length);
     for (int i = 0; i < threads.length; i++){
       pool.execute(threads[i]);
@@ -84,8 +74,6 @@ public class Config {
       tempoFinal = System.currentTimeMillis() - tempoInicial;
       System.out.printf("Tempo Final de Execução : %.3f ms%n", tempoFinal / 1000d);
     }
-
-    return tempoFinal;
   }
 
   /**
@@ -94,6 +82,11 @@ public class Config {
   private void populatePartes(){
     for (int i = 0; i < partes.length; i++)
       partes[i] = pedacoDeColuna * (i);
+    for (int k = 0; k < threads.length; k++) {
+      HashMap<Integer, int[]> auxiliar= instanciacaoDeHashMap(partes[k], partes[k+1], new HashMap<>());
+      threads[k] = new MatrizThread(partes[k], partes[k + 1], modoInsercao, auxiliar);
+      System.out.print(threads[k].colunaInicial + "-" + threads[k].colunaFinal + "|");
+    }
   }
 
   /**
@@ -103,18 +96,18 @@ public class Config {
   public void executionWithNumbersOfThreads(int nrThreads) {
     setAtributtesBasedOnThreads(nrThreads);
     populatePartes();
-
-    long tempoFinal = execucaoPool(this.modoInsercao);
-
+    execucaoPool();
     System.out.println( "Gravando No arquivo txt");
     Arquivo arquivo = new Arquivo();
-    arquivo.imprimirMatriz(Data.MatrizSaida.length, Data.MatrizSaida, nrThreads, tempoFinal, interactive);
+    arquivo.imprimirMatriz(Data.MatrizSaida.length, Data.MatrizSaida, nrThreads);
   }
 
   /**
    * Ordenação da matriz
    */
   void geraSaida(){
+    System.out.println("\nOrdenando sequencialmente ...");
+
     int indexI=0, indexJ=0;
     for(int organizer=0;organizer<100;organizer++){
       for (int i = 0; i < 1000; i++) {
