@@ -2,43 +2,41 @@ package main.domain;
 
 import java.util.HashMap;
 import java.util.Random;
-import java.util.TreeMap;
 
 public class MatrizThread extends  Thread{
   boolean interactive;
   int colunaInicial;
   int colunaFinal;
-  int tamanhoTotalLinhas;
-  int tamanhoTotalColunas;
   int qtdRandomInt = 100;
   ModosInsercao modoInsercao;
-//  TreeMap<Integer, int[]> treemap = new TreeMap<Integer, int[]>();  // alterações possiveis treeMap ou HashMap verificar melhor desempenho
-  HashMap<Integer, int[]> treemap;
+  HashMap<Integer, int[]> treemap = new HashMap<>();
+  int tamanhoTotalColunas;
+  int tamanhoTotalLinhas;
 
-  MatrizThread(int colunaInicial, int colunaFinal,  boolean interactive, ModosInsercao modoInsercao){
+
+//  TreeMap<Integer, int[]> treemap = new TreeMap<Integer, int[]>();  // alterações possiveis treeMap ou HashMap verificar melhor desempenho
+
+  MatrizThread(int colunaInicial, int colunaFinal,  boolean interactive, ModosInsercao modoInsercao,  HashMap<Integer, int[]> treemap){
     this.colunaInicial = colunaInicial;
     this.colunaFinal = colunaFinal;
     this.interactive = interactive;
     this.modoInsercao = modoInsercao;
+    this.treemap = treemap;
+    this.tamanhoTotalLinhas = Data.MatrizEntrada.length;
+    this.tamanhoTotalColunas= Data.MatrizEntrada[0].length;
   }
 
   /**
    * Carrega para uma arvore todas posições possiveis da matriz
    */
-  void processamentoAuxiliar(){
-    treemap = new HashMap<Integer, int[]>();
-    for (int i = 0 ; i < tamanhoTotalLinhas; i ++){
-      for (int j = colunaInicial; j < colunaFinal; j ++){
-        int posicao = tamanhoTotalLinhas * i + j;
-        treemap.put(posicao, new int[]{i, j});
-      }
-    }
-  }
 
-  void preencherMatrizDiagonal() {
-    MatrizDiagonal matrizDiagonal = new MatrizDiagonal(interactive);
-    matrizDiagonal.execucao();
-  }
+
+
+
+//  void preencherMatrizDiagonal() {
+//    MatrizDiagonal matrizDiagonal = new MatrizDiagonal(interactive);
+//    matrizDiagonal.execucao();
+//  }
 
   /**
    * Aqui  tem todas as posições possiveis da matriz mapeados em uma arvore
@@ -53,15 +51,15 @@ public class MatrizThread extends  Thread{
     int tam = tamanhoTotalColunas * tamanhoTotalLinhas;
     if(interactive)
     {
-      while(treemap.size() != 0){
+      while(this.treemap.size() != 0){
         int randomico = (int) (Math.random() * (tam ));
-        boolean contains = treemap.containsKey(randomico) == true;
+        boolean contains = this.treemap.containsKey(randomico);
         int erros = 0;
         System.out.print("Tentativa na posicao:" + randomico);
         if(contains){
           System.out.print(" e contextoopa ocorreu um acerto na inserção desta posicao O/ \n");
-          int linha = treemap.get(randomico)[0];
-          int coluna = treemap.get(randomico)[1];
+          int linha = this.treemap.get(randomico)[0];
+          int coluna = this.treemap.get(randomico)[1];
           Data.MatrizEntrada[linha][coluna] = random.nextInt(qtdRandomInt);
           treemap.remove(randomico);
         }else {
@@ -115,13 +113,12 @@ public class MatrizThread extends  Thread{
   public void run (){
 
     if(modoInsercao == ModosInsercao.randomico){
-      processamentoAuxiliar();
       preencherMatrizRandomicamente();
     }
 
-    if(modoInsercao == ModosInsercao.diagonal){
-      preencherMatrizDiagonal();
-    }
+//    if(modoInsercao == ModosInsercao.diagonal){
+//      preencherMatrizDiagonal();
+//    }
 
     if(modoInsercao == ModosInsercao.linhaXLinha){
       preencherMatrizLXL();

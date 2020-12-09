@@ -2,6 +2,10 @@ package main.domain;
 
 import main.external.Arquivo;
 
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -13,12 +17,26 @@ public class Config {
   private MatrizThread[] threads;
   private final boolean interactive;
   private   ModosInsercao modoInsercao;
+  int tamanhoTotalLinhas;
+  int tamanhoTotalColunas;
 
+
+  HashMap<Integer, int[]> instanciacaoDeHashMap(int colunaInicial,int colunaFinal, HashMap<Integer, int[]> treeMap){
+    for (int i = 0 ; i < tamanhoTotalLinhas; i ++){
+      for (int j = colunaInicial; j < colunaFinal; j ++){
+        int posicao = tamanhoTotalLinhas * i + j;
+        treeMap.put(posicao, new int[]{i, j});
+      }
+    }
+    return treeMap;
+  }
 
   public Config(boolean interactive, ModosInsercao modoInsercao){
     this.modoInsercao = modoInsercao;
     this.interactive = interactive;
     System.out.println("Modo interactive:" + interactive );
+    this.tamanhoTotalLinhas = Data.MatrizEntrada.length;
+    this.tamanhoTotalColunas= Data.MatrizEntrada[0].length;
   }
 
   /**
@@ -39,21 +57,35 @@ public class Config {
    * ( dando a ideia de cada uma thread executar uma parte do vetor
    * @return ExecutorService
    */
-  private ExecutorService execucaoPool(ModosInsercao modoInsercao){
+  private long execucaoPool(ModosInsercao modoInsercao){
+    long tempoInicial = System.currentTimeMillis();
     if(interactive) System.out.println("Colunas : de x a y");
+    long tempoFinal =0;
 
     for (int k = 0; k < threads.length; k++) {
-      threads[k] = new MatrizThread(partes[k], partes[k + 1], interactive, modoInsercao);
+      HashMap<Integer, int[]> auxiliar= instanciacaoDeHashMap(partes[k], partes[k+1], new HashMap<>());
+      threads[k] = new MatrizThread(partes[k], partes[k + 1], interactive, modoInsercao, auxiliar);
       if(interactive) System.out.print(threads[k].colunaInicial + "-" + threads[k].colunaFinal + "|");
     }
 
     if(interactive) System.out.println("\nInicio do processamento");
     ExecutorService pool = Executors.newFixedThreadPool(threads.length);
-    for (int i = 0; i < threads.length; i++)
+    for (int i = 0; i < threads.length; i++){
       pool.execute(threads[i]);
-
+    }
     pool.shutdown();
-    return pool;
+
+    try {
+      boolean b = pool.awaitTermination(1, TimeUnit.DAYS);
+      geraSaida();
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    } finally {
+      tempoFinal = System.currentTimeMillis() - tempoInicial;
+      System.out.printf("Tempo Final de Execução : %.3f ms%n", tempoFinal / 1000d);
+    }
+
+    return tempoFinal;
   }
 
   /**
@@ -69,24 +101,14 @@ public class Config {
    * @param nrThreads
    */
   public void executionWithNumbersOfThreads(int nrThreads) {
-    long tempoInicial = System.currentTimeMillis();
-    long tempoFinal;
     setAtributtesBasedOnThreads(nrThreads);
     populatePartes();
-    ExecutorService pool = execucaoPool(this.modoInsercao);
-    try {
-      pool.awaitTermination(1, TimeUnit.DAYS);
-      geraSaida();
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    } finally {
-      tempoFinal = System.currentTimeMillis() - tempoInicial;
-      System.out.printf("Tempo Final de Execução : %.3f ms%n", tempoFinal / 1000d);
-      if(!interactive){
-        Arquivo arquivo = new Arquivo();
-        arquivo.imprimirMatriz(Data.MatrizSaida.length, Data.MatrizSaida, nrThreads, tempoFinal, interactive);
-      }
-    }
+
+    long tempoFinal = execucaoPool(this.modoInsercao);
+
+    System.out.println( "Gravando No arquivo txt");
+    Arquivo arquivo = new Arquivo();
+    arquivo.imprimirMatriz(Data.MatrizSaida.length, Data.MatrizSaida, nrThreads, tempoFinal, interactive);
   }
 
   /**
