@@ -43,7 +43,7 @@ public class Config {
     if(interactive) System.out.println("Colunas : de x a y");
 
     for (int k = 0; k < threads.length; k++) {
-      threads[k] = new MatrizThread(partes[k], partes[k + 1], nrDeLinhas, Data.MatrizEntrada[0].length, interactive, modoInsercao);
+      threads[k] = new MatrizThread(partes[k], partes[k + 1], interactive, modoInsercao);
       if(interactive) System.out.print(threads[k].colunaInicial + "-" + threads[k].colunaFinal + "|");
     }
 

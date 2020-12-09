@@ -13,13 +13,11 @@ public class MatrizThread extends  Thread{
   int qtdRandomInt = 100;
   ModosInsercao modoInsercao;
 //  TreeMap<Integer, int[]> treemap = new TreeMap<Integer, int[]>();  // alterações possiveis treeMap ou HashMap verificar melhor desempenho
-  HashMap<Integer, int[]> treemap = new HashMap<Integer, int[]>();
+  HashMap<Integer, int[]> treemap;
 
-  MatrizThread(int colunaInicial, int colunaFinal, int tamanhoTotalLinhas, int tamanhoTotalColunas, boolean interactive, ModosInsercao modoInsercao){
+  MatrizThread(int colunaInicial, int colunaFinal,  boolean interactive, ModosInsercao modoInsercao){
     this.colunaInicial = colunaInicial;
     this.colunaFinal = colunaFinal;
-    this.tamanhoTotalLinhas = tamanhoTotalLinhas;
-    this.tamanhoTotalColunas= tamanhoTotalColunas;
     this.interactive = interactive;
     this.modoInsercao = modoInsercao;
   }
@@ -28,6 +26,7 @@ public class MatrizThread extends  Thread{
    * Carrega para uma arvore todas posições possiveis da matriz
    */
   void processamentoAuxiliar(){
+    treemap = new HashMap<Integer, int[]>();
     for (int i = 0 ; i < tamanhoTotalLinhas; i ++){
       for (int j = colunaInicial; j < colunaFinal; j ++){
         int posicao = tamanhoTotalLinhas * i + j;
@@ -60,7 +59,7 @@ public class MatrizThread extends  Thread{
         int erros = 0;
         System.out.print("Tentativa na posicao:" + randomico);
         if(contains){
-          System.out.print(" opa ocorreu um acerto na inserção desta posicao O/ \n");
+          System.out.print(" e contextoopa ocorreu um acerto na inserção desta posicao O/ \n");
           int linha = treemap.get(randomico)[0];
           int coluna = treemap.get(randomico)[1];
           Data.MatrizEntrada[linha][coluna] = random.nextInt(qtdRandomInt);
