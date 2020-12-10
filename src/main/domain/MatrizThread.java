@@ -85,6 +85,11 @@ public class MatrizThread extends  Thread{
 
   /**
    * Tentar enxergar alguma forma de ordenar paralelamente com pilha, arvore ou algo assim
+   *
+   */
+
+  /**
+   * Primeira alternativa de ordenamento, enquanto está sendo inserida na matriz separar por varios vetores e já inserir ordenando
    */
 
   /**
