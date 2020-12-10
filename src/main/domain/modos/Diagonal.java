@@ -1,14 +1,16 @@
-package main.domain;
+package main.domain.modos;
+
+import main.domain.Data;
 
 import java.util.Random;
 
-public class MatrizDiagonal {
+public class Diagonal {
 
   final String ANSI_RED = "\u001B[31m";
   final String ANSI_RESET = "\u001B[0m";
   final String ANSI_WHITE = "\u001B[37m";
 
-  MatrizDiagonal(){
+  Diagonal(){
   }
 
   public void execucao(){

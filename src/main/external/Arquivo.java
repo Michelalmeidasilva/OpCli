@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 
 public class Arquivo {
 
-  public void imprimirMatriz(int tamanho, int[][] matriz, int nrThreads ){
+  public void imprimirMatriz(int tamanho, int[][] matriz, String nrThreads ){
     String curDir = System.getProperty("user.dir");
     System.out.println("Escrevendo no arquivo ...");
     String caminhoAbsoluto = curDir +"/"+ nrThreads+ "threads.txt";

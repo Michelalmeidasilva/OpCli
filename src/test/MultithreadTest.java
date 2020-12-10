@@ -1,7 +1,7 @@
 package test;
 
 import main.domain.Config;
-import main.domain.ModosInsercao;
+import main.domain.modos.ModosInsercao;
 import org.junit.Test;
 
 public class MultithreadTest {
