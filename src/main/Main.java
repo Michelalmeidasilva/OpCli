@@ -2,6 +2,7 @@ package main;
 
 import main.domain.Config;
 import main.domain.modos.ModosInsercao;
+import main.domain.modos.Randomico;
 import main.domain.modos.Sequencial;
 
 /**
@@ -18,7 +19,7 @@ public class Main {
 
   public static void main(String[] args) {
    executarSequencialmente();
-
+//    executarSemArvore();
 //    executarRandomico1Thread();
 //    executarRandomico2Thread();
 //    executarRandomico4Thread();
@@ -31,10 +32,10 @@ public class Main {
   }
 
   public static void executarSemArvore(){
-
+    Randomico executar = new Randomico();
+    executar.startPreencherSemArvore();
   }
 
-//
   private static void executarRandomico4Thread() {
   }
 

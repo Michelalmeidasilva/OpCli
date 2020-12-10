@@ -37,6 +37,8 @@ public class Sequencial {
     }
   }
 
+
+
   void preencherMatrizCXCSequencial(int colunaInicial, int colunaFinal) {
     int rand;
     for (int i = colunaInicial; i < colunaFinal; i++) {

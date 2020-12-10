@@ -1,7 +1,7 @@
 package main.domain;
 
 import main.domain.modos.ModosInsercao;
-import main.domain.modos.RandomicoParalelo;
+import main.domain.modos.Randomico;
 import main.external.Arquivo;
 
 import java.util.HashMap;
@@ -13,7 +13,7 @@ public class Config {
   private int nrDeLinhas;
   private int pedacoDeColuna;        //um pedaço das colunas exemplo uma matriz 1000X1000 e 4 threads entao tem 1000 colunas /4, logo serão 250 posições pra cada thread
   private int[] partes;
-  private RandomicoParalelo[] threads;
+  private Randomico[] threads;
   private ModosInsercao modoInsercao;
   int tamanhoTotalLinhas;
   int tamanhoTotalColunas;
@@ -45,7 +45,7 @@ public class Config {
    */
   private void setAtributtesBasedOnThreads(int nrThreads) {
     int nrDeColunas;
-    threads = new RandomicoParalelo[nrThreads];
+    threads = new Randomico[nrThreads];
     nrDeColunas = Data.MatrizEntrada[0].length;
     nrDeLinhas = Data.MatrizEntrada.length;
     pedacoDeColuna = nrDeColunas / nrThreads;        //um pedaço das colunas exemplo uma matriz 1000X1000 e 4 threads entao tem 1000 colunas /4, logo serão 250 posições pra cada threa
@@ -89,7 +89,7 @@ public class Config {
       partes[i] = pedacoDeColuna * (i);
     for (int k = 0; k < threads.length; k++) {
       HashMap<Integer, int[]> auxiliar = instanciacaoDeHashMap(partes[k], partes[k + 1], new HashMap<>());
-      threads[k] = new RandomicoParalelo(partes[k], partes[k + 1], modoInsercao, auxiliar);
+      threads[k] = new Randomico(partes[k], partes[k + 1], modoInsercao, auxiliar);
       System.out.print(threads[k].colunaInicial + "-" + threads[k].colunaFinal + "|");
     }
   }
