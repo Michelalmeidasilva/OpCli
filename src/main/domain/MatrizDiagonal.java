@@ -7,6 +7,7 @@ public class MatrizDiagonal {
   final String ANSI_RED = "\u001B[31m";
   final String ANSI_RESET = "\u001B[0m";
   final String ANSI_WHITE = "\u001B[37m";
+
   MatrizDiagonal(){
   }
 
@@ -15,7 +16,6 @@ public class MatrizDiagonal {
     int tam = 0;
     preenchePrimeiraParte(i, j, tam, Data.MatrizEntrada);
     preencheSegundaParte(i, j, tam, Data.MatrizEntrada);
-
   }
 
   void preenchePrimeiraParte(int i, int j, int tam, int matriz [][]){
@@ -59,7 +59,6 @@ public class MatrizDiagonal {
 
   void imprimirMatriz(int matriz[][]){
     System.out.println();
-
     for (int k = 0; k < matriz.length ; k ++){
       for (int l = 0; l < matriz[k].length; l++) {
         if( matriz[k][l] == 1 ){
