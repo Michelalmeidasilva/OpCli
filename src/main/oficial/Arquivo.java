@@ -1,4 +1,4 @@
-package main.external;
+package main.oficial;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -25,6 +25,8 @@ public class Arquivo {
     try {
       arq.close();
       System.out.println("Escrita no arquivo finalizada, salvo em: " + caminhoAbsoluto);
+
+
     } catch (IOException e) {
       e.printStackTrace();
     }

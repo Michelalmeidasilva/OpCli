@@ -1,7 +1,6 @@
 package main.oficial;
 
 import main.domain.modos.*;
-import main.external.Arquivo;
 
 
 import java.util.concurrent.ExecutorService;
@@ -21,7 +20,7 @@ public class Main {
 
 
   public static void main(String[] args) {
-    executarRandomicoThread(4);
+    executarRandomicoThread(8);
   }
 
   public static void executarSequencialmente2() {
@@ -43,15 +42,18 @@ public class Main {
     pool.shutdown();
     try {
       boolean b = pool.awaitTermination(1, TimeUnit.DAYS);
-      System.out.println("Final do process de preenchimento");
-      tempoFinal = System.currentTimeMillis() - tempoInicial;
-      System.out.printf("Tempo Final de Execução : %.3f ms%n", tempoFinal / 1000d);
+
     } catch (InterruptedException e) {
       e.printStackTrace();
     } finally {
       Ordenacao ordenacao = new Ordenacao();
-      ordenacao.ordenarMatriz();
+      ordenacao.ordenarOtimizado();
+      System.out.println("Final do process de preenchimento");
+      tempoFinal = System.currentTimeMillis() - tempoInicial;
+      System.out.printf("Tempo Final de Execução : %.3f ms%n\n", tempoFinal / 1000d);
+
       System.out.println("Gravando No arquivo txt");
+
       Arquivo arquivo = new Arquivo();
       arquivo.imprimirMatriz(Data.MatrizSaida.length, Data.MatrizSaida, nr + "");
     }
