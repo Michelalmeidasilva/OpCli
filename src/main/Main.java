@@ -1,9 +1,12 @@
 package main;
 
-import main.domain.Config;
-import main.domain.modos.ModosInsercao;
-import main.domain.modos.Randomico;
-import main.domain.modos.Sequencial;
+import main.domain.Data;
+import main.domain.modos.*;
+
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Ignacio, Michel
@@ -14,36 +17,52 @@ import main.domain.modos.Sequencial;
  *  pfv!"!!!!!!! presente de final de ano
  */
 
-
 public class Main {
 
+
   public static void main(String[] args) {
-   executarSequencialmente();
-//    executarSemArvore();
-//    executarRandomico1Thread();
-//    executarRandomico2Thread();
-//    executarRandomico4Thread();
-
+    executarRandomicoThread(4);
   }
 
-  public static void executarSequencialmente(){
-    Sequencial executar = new Sequencial();
-    executar.start();
+  public static void executarSequencialmente2() {
+    Monothread test = new Monothread();
+    test.start();
   }
 
-  public static void executarSemArvore(){
-    Randomico executar = new Randomico();
-    executar.startPreencherSemArvore();
+  private static void executarRandomicoThread(int nr) {
+    SeparacaoThreads test = new SeparacaoThreads();
+    Multithread threads[] = test.setarThreads(nr);
+    long tempoInicial = System.currentTimeMillis();
+    long tempoFinal = 0;
+    System.out.println("Colunas : de x a y");
+    System.out.println("\nInicio do processamento");
+    ExecutorService pool = Executors.newFixedThreadPool(threads.length);
+    for (int i = 0; i < threads.length; i++) {
+      pool.execute(threads[i]);
+    }
+    pool.shutdown();
+    try {
+      boolean b = pool.awaitTermination(1, TimeUnit.DAYS);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    } finally {
+      Ordenacao ordenacao = new Ordenacao();
+      ordenacao.ordenarMatriz();
+      tempoFinal = System.currentTimeMillis() - tempoInicial;
+      System.out.printf("Tempo Final de Execução : %.3f ms%n", tempoFinal / 1000d);
+    }
   }
 
-  private static void executarRandomico4Thread() {
+  private static void startPreencherSemArvore () {
+    for (int i = 0; i < Data.MatrizEntrada.length; i++) {
+      for (int j = 0; j < Data.MatrizEntrada[i].length; j++) {
+        Data.MatrizEntrada[i][j] = 0;
+      }
+    }
+    Randomico rd = new Randomico();
+    rd.startPreencherSemArvore();
   }
 
-  private static void executarRandomico2Thread() {
-  }
-
-  private static void executarRandomico1Thread() {
-    Config config = new Config(false, ModosInsercao.randomico);
-    config.executionWithNumbersOfThreads(4);
-  }
 }
+
+
