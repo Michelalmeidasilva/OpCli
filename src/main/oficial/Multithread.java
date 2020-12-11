@@ -15,10 +15,7 @@ public class Multithread extends Thread{
     this.nrThreads = nrThreads;
   }
 
-
-
   public void preencher(){
-
     Random gerador = new Random();
     int tam = (linhaMax * colunaMax) / nrThreads;
     int count=0,linha,coluna;
@@ -31,7 +28,6 @@ public class Multithread extends Thread{
         Data.MatrizEntrada[linha][coluna] = gerador.nextInt(100)+1;
         count++;
       }}
-
   }
 
   @Override

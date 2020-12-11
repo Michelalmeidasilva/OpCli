@@ -32,6 +32,10 @@ public class Main {
     System.out.println("Media>" + valorTotal/ amostras);
   }
 
+  public static void executarSequencialmente2() {
+    Monothread test = new Monothread();
+    test.start();
+  }
 
   private static void executarRandomicoThread(int nr,boolean isEscrita) {
     SeparacaoThreads test = new SeparacaoThreads();

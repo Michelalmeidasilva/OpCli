@@ -1,14 +1,8 @@
 package main.oficial;
 
-import main.oficial.Data;
-
 public class Ordenacao {
 
   public void ordenarMatriz() {
-//    System.out.println("\nOrdenando mono thread ...");
-//
-//    long tempoInicial = System.currentTimeMillis();
-//    long tempoFinal = 0;
     int indexI = 0, indexJ = 0;
     for (int organizer = 1; organizer < 101; organizer++) {
       for (int i = 0; i < Data.MatrizSaida.length; i++) {
@@ -24,18 +18,9 @@ public class Ordenacao {
         }
       }
     }
-//    System.out.println("Final do process de ordenamento");
-//    tempoFinal = System.currentTimeMillis() - tempoInicial;
-//    System.out.printf("Tempo Final de ordenação : %.3f ms%n\n", tempoFinal / 1000d);
-
   }
 
-
   public void ordenarOtimizado() {
-//    System.out.println("\nOrdenando mono thread ...");
-//    long tempoInicial = System.currentTimeMillis();
-//    long tempoFinal = 0;
-
     System.out.println("Ordenando otimizado...");
     int msI = 0, msJ = 0;
     int found, qtValor;
@@ -56,10 +41,5 @@ public class Ordenacao {
         }
       }
     }
-
-//    System.out.println("Final do process de ordenamento");
-//    tempoFinal = System.currentTimeMillis() - tempoInicial;
-//    System.out.printf("Tempo Final de ordenação : %.3f ms%n\n", tempoFinal / 1000d);
   }
-
 }
