@@ -1,7 +1,7 @@
-package main;
+package main.oficial;
 
-import main.domain.Data;
 import main.domain.modos.*;
+import main.external.Arquivo;
 
 
 import java.util.concurrent.ExecutorService;
@@ -43,25 +43,20 @@ public class Main {
     pool.shutdown();
     try {
       boolean b = pool.awaitTermination(1, TimeUnit.DAYS);
+      System.out.println("Final do process de preenchimento");
+      tempoFinal = System.currentTimeMillis() - tempoInicial;
+      System.out.printf("Tempo Final de Execução : %.3f ms%n", tempoFinal / 1000d);
     } catch (InterruptedException e) {
       e.printStackTrace();
     } finally {
       Ordenacao ordenacao = new Ordenacao();
       ordenacao.ordenarMatriz();
-      tempoFinal = System.currentTimeMillis() - tempoInicial;
-      System.out.printf("Tempo Final de Execução : %.3f ms%n", tempoFinal / 1000d);
+      System.out.println("Gravando No arquivo txt");
+      Arquivo arquivo = new Arquivo();
+      arquivo.imprimirMatriz(Data.MatrizSaida.length, Data.MatrizSaida, nr + "");
     }
   }
 
-  private static void startPreencherSemArvore () {
-    for (int i = 0; i < Data.MatrizEntrada.length; i++) {
-      for (int j = 0; j < Data.MatrizEntrada[i].length; j++) {
-        Data.MatrizEntrada[i][j] = 0;
-      }
-    }
-    Randomico rd = new Randomico();
-    rd.startPreencherSemArvore();
-  }
 
 }
 

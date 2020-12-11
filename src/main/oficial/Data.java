@@ -1,4 +1,4 @@
-package main.domain;
+package main.oficial;
 
 public class Data {
   static public int [][] MatrizEntrada = new int [1000][1000];

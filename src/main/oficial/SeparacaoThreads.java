@@ -1,5 +1,4 @@
-package main.domain.modos;
-import main.domain.Data;
+package main.oficial;
 
 public class SeparacaoThreads {
 
@@ -10,20 +9,20 @@ public class SeparacaoThreads {
    */
   public Multithread[] setarThreads(int nrThreads){
     int[] partes;
-    int pedacoDeColuna;
-    int nrDeColunas;
+    int pedacoDeLinha;
+    int nrDelLinha;
 
-    nrDeColunas = Data.MatrizEntrada[0].length;
-    pedacoDeColuna = nrDeColunas / nrThreads;
+    nrDelLinha = Data.MatrizEntrada[0].length;
+    pedacoDeLinha = nrDelLinha / nrThreads;
     partes = new int[nrThreads + 1];
 
     for (int i = 0; i < partes.length; i++)
-      partes[i] = pedacoDeColuna * (i);
+      partes[i] = pedacoDeLinha * (i);
 
     Multithread threads[] = new Multithread[nrThreads];
 
     for (int k = 0; k < threads.length; k++) {
-      threads[k] = new Multithread(partes[k], partes[k + 1]);
+      threads[k] = new Multithread(partes[k], partes[k + 1], nrThreads);
     }
 
     return threads;
